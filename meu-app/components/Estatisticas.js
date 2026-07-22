@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
 
 export default function Estatisticas() {
@@ -9,28 +9,37 @@ export default function Estatisticas() {
   const [favoritar, setFavoritar] = useState("⭐");
 
   const [compartilhamento, setCompartilhamento] = useState(0);
-
+a
   const [comentario, setComentario] = useState('');
   const [comentarios, setComentarios] = useState([]);
 
-  function CurtirDescurtir() {
-    if (!curtir) {
-      setCurtir(true);
+  useEffect(() => {
+    if (curtir) {
       setCurtida("❤️");
     } else {
-      setCurtir(false);
       setCurtida("🤍");
     }
+  }, [curtir]);
+
+  useEffect(() => {
+    if (favorito) {
+      setFavoritar("🌟");
+    } else {
+      setFavoritar("⭐");
+    }
+  }, [favorito]);
+
+  // Exibe no console a quantidade de comentários
+  useEffect(() => {
+    console.log(`Quantidade de comentários: ${comentarios.length}`);
+  }, [comentarios]);
+
+  function CurtirDescurtir() {
+    setCurtir(!curtir);
   }
 
   function FavoritarDesfavoritar() {
-    if (!favorito) {
-      setFavorito(true);
-      setFavoritar("🌟");
-    } else {
-      setFavorito(false);
-      setFavoritar("⭐");
-    }
+    setFavorito(!favorito);
   }
 
   function AdicionarComentario() {
@@ -50,9 +59,7 @@ export default function Estatisticas() {
 
         <Button
           title={`🔄 ${compartilhamento}`}
-          onPress={() =>
-            setCompartilhamento(compartilhamento + 1)
-          }
+          onPress={() => setCompartilhamento(compartilhamento + 1)}
         />
 
         <Button
